@@ -1,0 +1,246 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  color: #000000;
+  font-family: 'Helvetica', 'Verdana', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  align-content: stretch;
+  align-items: stretch;
+  background: #ececec;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.is-hidden {
+  display: none;
+}
+
+/**
+ * Header
+ */
+
+.header {
+  align-content: center;
+  align-items: stretch;
+  background: #ffe135;
+  box-shadow:
+      0 4px 5px 0 rgba(0, 0, 0, 0.14),
+      0 2px 9px 1px rgba(0, 0, 0, 0.12),
+      0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-size: 20px;
+  height: 56px;
+  justify-content: flex-start;
+  padding: 16px 16px 0 16px;
+  position: fixed;
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+  width: 100%;
+  will-change: transform;
+  z-index: 1000;
+}
+
+.header h1 {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.header button {
+  border: none;
+  cursor: pointer;
+  height: 24px;
+  margin-right: 16px;
+  opacity: 1;
+  outline: none;
+  overflow: hidden;
+  text-indent: -30000px;
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  width: 24px;
+}
+
+.header #butRefresh {
+  background: url(/images/buttons/refresh.svg) center center no-repeat;
+}
+
+.header #butInstall {
+  background: url(/images/buttons/install.svg) center center no-repeat;
+}
+
+.header .powered-by {
+  color: white;
+  font-size: 0.6em;
+  text-decoration: none;
+}
+
+/**
+ * Loading spinner
+ */
+
+.loader {
+  left: 50%;
+  top: 50%;
+  position: fixed;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.loader #spinner {
+  box-sizing: border-box;
+  stroke: #3f51b5;
+  stroke-width: 3px;
+  -webkit-transform-origin: 50%;
+  transform-origin: 50%;
+  -webkit-animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+  animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(450deg);
+    transform: rotate(450deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  to {
+    -webkit-transform: rotate(450deg);
+    transform: rotate(450deg);
+  }
+}
+
+@-webkit-keyframes line {
+  0% {
+    stroke-dasharray: 2, 85.964;
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  50% {
+    stroke-dasharray: 65.973, 21.9911;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 2, 85.964;
+    stroke-dashoffset: -65.973;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes line {
+  0% {
+    stroke-dasharray: 2, 85.964;
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  50% {
+    stroke-dasharray: 65.973, 21.9911;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dasharray: 2, 85.964;
+    stroke-dashoffset: -65.973;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+}
+
+/**
+ * Icons
+ */
+
+.icon {
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.icon.add {
+  background-image: url("/images/buttons/add.svg");
+}
+
+/**
+ * Main body
+ */
+
+.main {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: 60px;
+}
+
+.main .fab {
+  background-color: #3f51b5;
+  border-radius: 50%;
+  bottom: 1rem;
+  height: 56px;
+  padding: 12px;
+  position: fixed;
+  right: 1rem;
+  width: 56px;
+  z-index: 1000;
+}
+
+.main .fab .icon {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
+
+
+/**
+ * cards
+ */
+
+.card {
+  background: #fff;
+  border-radius: 2px;
+  box-shadow:
+      0 2px 2px 0 rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
+  margin: 16px;
+  padding: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+.banana-img {
+  margin: 0 auto;
+  height: auto;
+  max-width: 100%;
+  border: none;
+  display: block;
+}
+
+#location {
+  margin: 0 0 10px 0;
+}
