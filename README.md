@@ -16,7 +16,7 @@ Randomly pick one picture from a S3 bucket, get its Exif data, reverse-geocode i
 - MVC architecture
 - S3 requests
 - Get GPS data from picture
-- Reverse Geocoding of the GPS data
-- In memory cache system
+- Reverse-Geocoding of the GPS data
+- In-memory cache system
 - Auto-registration of Controllers/Routes
-- Continuous deployment using AWS CloudPipeline
+- Continuous deployment using AWS CodePipeline
