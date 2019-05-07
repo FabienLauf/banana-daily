@@ -16,7 +16,11 @@ Randomly pick one picture from a S3 bucket, get its Exif data, reverse-geocode i
 - MVC architecture
 - S3 requests
 - Get GPS data from picture
-- Reverse-Geocoding of the GPS data
+- Reverse-Geocoding of the GPS data using OpenStreetMap
 - In-memory cache system
 - Auto-registration of Controllers/Routes
 - Continuous deployment using AWS CodePipeline
+
+## Playground
+
+You can try banana-daily here http://banana-daily.ap-southeast-1.elasticbeanstalk.com/

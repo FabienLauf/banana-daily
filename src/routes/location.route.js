@@ -12,7 +12,9 @@ class LocationRoute extends AbstractRoute {
             // Optional depending on the providers
             httpAdapter: 'https',
             formatter: 'string',
-            formatterPattern: '%T, %P'
+            formatterPattern: '%c, %T, %P',
+            language: 'en-US',
+            zoom: 10
         });
 
         this.handleRequest('get', '/location/:lat/:long', this.getLocation.bind(this));
@@ -28,8 +30,10 @@ class LocationRoute extends AbstractRoute {
                 return this.geocoder
                     .reverse({lat: lat, lon: long})
                     .then(function (geoResp) {
+                        console.log('geoResp', geoResp);
                         if (geoResp && geoResp.length > 0) {
-                            location = geoResp[0];
+                            location = geoResp[0].replace('undefined, ', '');
+                            console.log('location', location);
                         }
                         return location;
                     })
