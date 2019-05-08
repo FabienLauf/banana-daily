@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const Utils = require('../utils');
 const Picture = require('../models/picture');
 const S3Service = require('../services/s3.service');
 
 const getRemotePicture = Symbol('getRemotePicture');
 const getLocalePicture = Symbol('getLocalePicture');
-const getRandomItemFromArray = Symbol('getRandomItemFromArray');
 
 const SUNSETS_FOLDER_URL = '/images/sunsets';
 const SUNSETS_FOLDER_PATH = path.join(__dirname, '../../public', SUNSETS_FOLDER_URL);
@@ -30,27 +30,28 @@ class PictureService {
         return this.s3.listAllImgFromBucket()
             .then(pics => {
                 const pic = new Picture();
-                pic.url = this[getRandomItemFromArray](pics);
+                pic.url = Utils.getRandomItemFromArray(pics);
                 return pic;
             })
     }
 
     [getLocalePicture]() {
-        const picName = this[getRandomItemFromArray](fs.readdirSync(SUNSETS_FOLDER_PATH));
-        return new Promise((resolve, reject) => {
-            try {
+        return Utils.promisify(fs.readdir, SUNSETS_FOLDER_PATH, {withFileTypes:true})
+            .then((files) => {
+                return files.filter((file) => {
+                    return file.isFile() && file.name.endsWith('.jpg');
+                });
+            }).then((files) => {
+                return Utils.getRandomItemFromArray(files);
+            }).then((file) => {
                 const pic = new Picture();
-                pic.url = path.join(SUNSETS_FOLDER_URL, picName);
-                resolve(pic);
-            } catch (err) {
-                reject(err);
-            }
-        });
+                pic.url = path.join(SUNSETS_FOLDER_URL, file.name);
+                return pic;
+            }).catch((err) => {
+                console.error('getLocalePicture error:', err);
+            });
     }
 
-    [getRandomItemFromArray](items) {
-        return items[Math.floor(Math.random() * items.length)];
-    }
 }
 
 

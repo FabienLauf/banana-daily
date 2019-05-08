@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const request = require('request').defaults({ encoding: null });
+const Utils = require('../utils');
 const AbstractRoute = require('./abstract');
 const Picture = require('../models/picture');
 const ExifParser = require('exif-parser');
@@ -22,62 +23,43 @@ class ExifRoute extends AbstractRoute {
         const body = req.body;
         const pic = Object.assign(new Picture(), body);
 
-        CacheService.get(`getExifData_${pic.fileName}`, () => {
-            return this[getExifData](pic.url).then(picExifData => {
-                                            return this[mapExifDataToPicture](pic, picExifData)
-                                                .then(pic => {
-                                                    return pic;
-                                                })
-                                                .catch(err1 => {
-                                                    console.error('mapExifDataToPicture error', err1);
-                                                });
-                                        })
-                                        .catch(err2 => {
-                                            console.error('getExifData error', err2);
-                                        });
-        }).then(pic => {
-            res.json(pic);
-        });
+        try {
+            CacheService.get(`getExifData_${pic.fileName}`, () => {
+                return this[getExifData](pic.url).then((picExifData) => this[mapExifDataToPicture](pic, picExifData));
+            }).then(fullPic => {
+                res.json(fullPic);
+            }).catch((err) => {
+                console.error('getExifData error', err);
+            });
+        } catch (err) {
+            console.error('getExifData error', err);
+        }
     };
 
 
     [mapExifDataToPicture](pic, picExifData) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (picExifData.tags && picExifData.tags.GPSDateStamp) {
-                    const date = picExifData.tags.GPSDateStamp.split(":");
-                    pic.date = date[2] + '/' + date[1] + '/' + date[0];
-                }
-                if (picExifData.tags && picExifData.tags.GPSLatitude) {
-                    pic.lat = picExifData.tags.GPSLatitude;
-                    pic.long = picExifData.tags.GPSLongitude;
-                }
-                resolve(pic);
-            } catch (err) {
-                reject(err);
-            }
-        });
+        if (picExifData.tags && picExifData.tags.GPSDateStamp) {
+            const date = picExifData.tags.GPSDateStamp.split(":");
+            pic.date = date[2] + '/' + date[1] + '/' + date[0];
+        }
+        if (picExifData.tags && picExifData.tags.GPSLatitude) {
+            pic.lat = picExifData.tags.GPSLatitude;
+            pic.long = picExifData.tags.GPSLongitude;
+        }
+        return pic;
     }
 
     [getExifData](picPath) {
-        return new Promise((resolve, reject) => {
-            try {
-                if (picPath.startsWith('http')) {
-                    request.get(picPath, function (err, res, buffer) {
-                        const parser = ExifParser.create(buffer);
-                        const result = parser.parse();
-                        resolve(result);
-                    });
-                } else {
-                    const buffer = fs.readFileSync(path.join(__dirname, '../../public', picPath));
-                    const parser = ExifParser.create(buffer);
-                    const result = parser.parse();
-                    resolve(result);
-                }
-            } catch (err) {
-                reject(err);
-            }
-        })
+        if (picPath.startsWith('http')) {
+            return Utils.promisify(request.get, picPath).then((result) => {
+                const buffer = result[1];
+                return ExifParser.create(buffer).parse();
+            });
+        } else {
+            return Utils.promisify(fs.readFile, path.join(__dirname, '../../public', picPath)).then((buffer) => {
+                return ExifParser.create(buffer).parse();
+            });
+        }
     }
 }
 

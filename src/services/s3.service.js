@@ -1,3 +1,4 @@
+const Utils = require('../utils');
 const CacheService = require('../services/cache.service');
 const AWS = require('aws-sdk');
 
@@ -13,17 +14,12 @@ class S3Service {
 
 
     listAllImgFromBucket() {
-        var params = {
-            Bucket: BUCKET_ID
-        };
-
-        return CacheService.get(`listObjectsV2_${BUCKET_ID}`, () => new Promise((resolve, reject) => {
-            this.s3.listObjectsV2(params, function (err, data) {
-                if (err) {
-                    console.error('listObjectsV2 error', err);
-                    reject(err);
-                }
-                else {
+        return CacheService.get(`listObjectsV2_${BUCKET_ID}`, () => {
+            var params = {
+                Bucket: BUCKET_ID
+            };
+            return Utils.promisify(this.s3.listObjectsV2.bind(this.s3), params)
+                .then((data) => {
                     const pics = [];
                     if (data && data.Contents && data.Contents.length > 0) {
                         data.Contents.forEach(pic => {
@@ -32,10 +28,11 @@ class S3Service {
                             }
                         });
                     }
-                    resolve(pics);
-                }
-            });
-        })).then(pics => {
+                    return pics;
+                }).catch((err) => {
+                    console.error('listObjectsV2 error', err);
+                });
+        }).then(pics => {
             return pics;
         });
     };

@@ -29,16 +29,14 @@ class LocationRoute extends AbstractRoute {
             CacheService.get(`getLocation_${lat}_${long}`, () => {
                 return this.geocoder
                     .reverse({lat: lat, lon: long})
-                    .then(function (geoResp) {
-                        console.log('geoResp', geoResp);
+                    .then((geoResp) => {
                         if (geoResp && geoResp.length > 0) {
-                            location = geoResp[0].replace('undefined, ', '');
-                            console.log('location', location);
+                            location = geoResp[0].split("undefined, ").join("");
                         }
                         return location;
                     })
                     .catch(function (err) {
-                        console.error(err);
+                        console.error('geocoder reverse error', err);
                         return location;
                     });
             }).then(loc => {
