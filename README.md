@@ -8,7 +8,15 @@ Wanted to build a Progressive Webb App on my own and make use of my AWS Free Tie
 
 Randomly pick one picture from a S3 bucket, get its Exif data, reverse-geocode its location, and display it on the UI.
 
-## MVP
+## Playground
+
+You can try banana-daily here http://banana-daily.ap-southeast-1.elasticbeanstalk.com/
+
+## 1.1.0
+
+- In-app notifications
+
+## 1.0.0 - MVP
 
 - Installable Progressive Webb App with responsive UI
 - App Shell Model
@@ -20,7 +28,3 @@ Randomly pick one picture from a S3 bucket, get its Exif data, reverse-geocode i
 - In-memory cache system
 - Auto-registration of Controllers/Routes
 - Continuous deployment using AWS CodePipeline
-
-## Playground
-
-You can try banana-daily here http://banana-daily.ap-southeast-1.elasticbeanstalk.com/

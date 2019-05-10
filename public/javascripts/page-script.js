@@ -15,6 +15,7 @@ class PageScript {
         this.loader = document.querySelector('.loader');
         document.getElementById('butRefresh').addEventListener('click', this[updateUI].bind(this));
         document.getElementById('butNotification').addEventListener('click', this.notif.displayNotification);
+        if('Notification' in window && navigator.serviceWorker) document.getElementById('butNotification').removeAttribute('hidden');
         this[updateUI]();
     }
 
