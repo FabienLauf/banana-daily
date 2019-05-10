@@ -86,6 +86,10 @@ body {
   background: url(/images/buttons/install.svg) center center no-repeat;
 }
 
+.header #butNotification {
+  background: url(/images/buttons/notification.svg) center center no-repeat;
+}
+
 .header .powered-by {
   color: white;
   font-size: 0.6em;

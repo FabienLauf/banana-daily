@@ -1,3 +1,5 @@
+import CustomNotification from './custom-notification.js';
+
 const getPictureModel = Symbol('getPictureModel');
 const updatePicture = Symbol('updatePicture');
 const getExif = Symbol('getExif');
@@ -8,9 +10,11 @@ const updateUI = Symbol('updateUI');
 class PageScript {
 
     constructor() {
+        this.notif = new CustomNotification();
         this.main = document.querySelector('main');
         this.loader = document.querySelector('.loader');
         document.getElementById('butRefresh').addEventListener('click', this[updateUI].bind(this));
+        document.getElementById('butNotification').addEventListener('click', this.notif.displayNotification);
         this[updateUI]();
     }
 
@@ -60,10 +64,10 @@ class PageScript {
 
         this.loader.classList.remove('is-hidden');
         this.main.removeChild(oldPicture);
-
-        newPicture.querySelector('img').setAttribute('src', picJson._url);
+        newPicture.querySelector('img').setAttribute('src', picJson.url);
         newPicture.addEventListener('click', this[updateUI].bind(this));
         this.loader.classList.add('is-hidden');
+
         this.main.appendChild(newPicture);
 
         this[updateLocation](picJson);
@@ -84,17 +88,7 @@ class PageScript {
     }
 
     [updateUI]() {
-        this[getPictureModel]().then(picJson => this[getExif](picJson).then(picJson => this[getLocation](picJson)).then(picJson => {
-            //picJson._location = location;
-            this[updatePicture](picJson);
-        }));
-        /*
-        this[updatePicture]().then(urlJson => {
-            this[updateExif](urlJson).then(exifJson => {
-                this[updateLocation](exifJson);
-            });
-        });
-        */
+        this[getPictureModel]().then(this[getExif]).then(this[getLocation]).then(this[updatePicture].bind(this)).catch(err => console.error('updateUI error:', err));
     }
 
 }

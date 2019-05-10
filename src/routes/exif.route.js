@@ -21,11 +21,11 @@ class ExifRoute extends AbstractRoute {
 
     getExifData(req, res, next) {
         const body = req.body;
-        const pic = Object.assign(new Picture(), body);
+        const pic = Object.assign(new Picture(body.url), body);
 
         try {
             CacheService.get(`getExifData_${pic.fileName}`, () => {
-                return this[getExifData](pic.url).then((picExifData) => this[mapExifDataToPicture](pic, picExifData));
+                return this[getExifData](pic.url).then(exifData => this[mapExifDataToPicture](pic, exifData));
             }).then(fullPic => {
                 res.json(fullPic);
             }).catch((err) => {

@@ -28,11 +28,7 @@ class PictureService {
 
     [getRemotePicture]() {
         return this.s3.listAllImgFromBucket()
-            .then(pics => {
-                const pic = new Picture();
-                pic.url = Utils.getRandomItemFromArray(pics);
-                return pic;
-            })
+            .then(pics => new Picture(Utils.getRandomItemFromArray(pics)));
     }
 
     [getLocalePicture]() {
@@ -44,9 +40,7 @@ class PictureService {
             }).then((files) => {
                 return Utils.getRandomItemFromArray(files);
             }).then((file) => {
-                const pic = new Picture();
-                pic.url = path.join(SUNSETS_FOLDER_URL, file.name);
-                return pic;
+                return new Picture(path.join(SUNSETS_FOLDER_URL, file.name));
             }).catch((err) => {
                 console.error('getLocalePicture error:', err);
             });

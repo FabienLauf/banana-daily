@@ -7,6 +7,7 @@
   "Scope": "/",
   "start_url": "/",
   "splash_pages": null,
+  "gcm_sender_id": "614501899599",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

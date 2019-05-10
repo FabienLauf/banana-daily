@@ -2,19 +2,9 @@ const path = require('path');
 
 class Picture {
 
-    get url() {
-        return this._url;
-    }
-    set url(url) {
-        this._url = url;
-        this._fileName = path.basename(url);
-    }
-
-    get fileName() {
-        return this._fileName;
-    }
-    set fileName(fileName) {
-        this._fileName = fileName;
+    constructor(url) {
+        this.url = url;
+        this.fileName = path.basename(url);
     }
 
     get lat() {
