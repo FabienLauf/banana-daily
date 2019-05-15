@@ -13,9 +13,17 @@ class PageScript {
         this.notif = new CustomNotification();
         this.main = document.querySelector('main');
         this.loader = document.querySelector('.loader');
-        document.getElementById('butRefresh').addEventListener('click', this[updateUI].bind(this));
-        document.getElementById('butNotification').addEventListener('click', this.notif.displayNotification);
-        if('Notification' in window && navigator.serviceWorker) document.getElementById('butNotification').removeAttribute('hidden');
+        this.btns = {
+            refresh: document.getElementById('butRefresh'),
+            notif: document.getElementById('butNotification')
+        };
+
+        this.btns.refresh.addEventListener('click', this[updateUI].bind(this));
+        if('Notification' in window && navigator.serviceWorker) {
+            this.btns.notif.addEventListener('click', this.notif.displayNotification);
+            this.btns.notif.removeAttribute('hidden');
+        }
+        
         this[updateUI]();
     }
 
