@@ -3,8 +3,8 @@ const messages = ['I love you Banane! ❤️', 'Hello Banane!', 'kolo meeeee!', 
     'Plop plop plop', 'I love you like monkeys love bananas', 'Eh, ask me ask me!', 'Do you love me?', 'Arigato 🙇‍♂️'];
 
 const options = {
-    badge: '/images/icons/icon-144x144.png',
-    icon: '/images/icons/icon-72x72.png',
+    badge: '/images/icons/bananas.ico',
+    icon: '/images/icons/icon-144x144.png',
     vibrate: [100, 50, 100],
     dir: 'auto',
     lang: 'en-US'
